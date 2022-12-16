@@ -1,0 +1,21 @@
+{
+  "name": "p2pchess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run open",
+    "open": "http-server -a -c-1 localhost -p 1236"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cullo7/p2pchess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cullo7/p2pchess/issues"
+  },
+  "homepage": "https://github.com/cullo7/p2pchess#readme"
+}
