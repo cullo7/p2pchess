@@ -1,32 +1,44 @@
 // peer declarations
-const caller = new Peer('initiatorId', { debug: 3 });
-const callee = new Peer('calleId', { debug: 3 });
-var conn;
+const local = new Peer();
+var conn = undefined;
 
-//caller listeners
-caller.on("open", () => {
-//    alert("caller opened");
+local.on("open", (id) => {
+    //    alert("my id is " + id);
+    document.getElementById("peerid").value = id;
 });
 
-// callee listeners
-callee.on("open", () => {
-    alert("callee opened");
-    // connection needs to be declared here so that all the listeners are initialized
-    conn = caller.connect('calleId');
-});
-
-callee.on("connection", (otroconn) => {
-    alert('peer connected');
+local.on("connection", (otroconn) => {
     otroconn.on('open', function() {
-        console.log('conn open');
-	sendMessage("hi");
-
+	alert("connection opened");
     });
     otroconn.on('data', function(data) {
-        console.log(data);
+        alert("data: " + data);
     });
 });
 
 function sendMessage(s) {
-    conn.send(s);
+    if (conn == undefined) {
+	alert("connection not established");
+    } else {
+	conn.send(s);
+    }
+}
+
+var input = document.getElementById("mensaje");
+input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+	sendMessage(input.value);
+	input.value = "";
+    }
+});
+
+var otroIp = document.getElementById("otropeerid");
+var connectButton = document.getElementById("connect");
+connectButton.onclick = () => {
+    if (otroIp.value == "") {
+	alert("missing remote IP");
+    } else {
+	alert("trying to connect");
+	conn = local.connect(otroIp.value);
+    }
 }
