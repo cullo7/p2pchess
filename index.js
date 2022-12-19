@@ -1,30 +1,12 @@
-// PeerJS seems instable...
+// caller side
+const caller = new Peer('initiatorId', { debug: 3 });
+const callee = new Peer('calleId', { debug: 3 });
 
-var myPeerId = document.getElementById('myPeerId');
-var peerId = document.getElementById('peerId');
-var connectButton = document.getElementById('connect');
+var conn = caller.connect('calleId');
 
-var peer = new Peer();
-peer.on('open', function(id) {
-  console.log('My peer ID is: ' + id);
-  myPeerId.text = id;
-});
-peer.on('error', function(err) { console.log(err); });
-peer.on('connection', function(conn) { console.log('new connection : ',conn); });
+caller.on("open", () => {alert("caller opened");});
+callee.on("open", () => {alert("callee opened");});
+printname = (str) => {alert(str);};
 
-connectButton.onclick = function() {
-  var conn = peer.connect(peerId.value);
-    console.log(conn);
-    console.log("waiting for more data..");
-  conn.on('open', function() {
-    // Receive messages
-    conn.on('data', function(data) {
-      console.log('Received');
-    });
+caller.on("connection", printname("connection"));
 
-    // Send messages
-    conn.send('Hello!');
-  });
-      conn = peer.connect(peerId.value);
-
-};

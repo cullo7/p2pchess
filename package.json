@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run open",
-    "open": "http-server -a -c-1 localhost -p 1236"
+    "open": "http-server -c-1"
   },
   "repository": {
     "type": "git",
