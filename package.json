@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/cullo7/p2pchess/issues"
   },
-  "homepage": "https://github.com/cullo7/p2pchess#readme"
+  "homepage": "https://github.com/cullo7/p2pchess#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
 }
