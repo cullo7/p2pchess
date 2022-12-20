@@ -21,16 +21,17 @@ function sendMessage(s) {
 	alert("connection not established");
     } else {
 	conn.send(s);
+	//post message
     }
 }
 
-var input = document.getElementById("mensaje");
-input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-	sendMessage(input.value);
-	input.value = "";
-    }
-});
+var input = document.getElementById("message");
+  input.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+  sendMessage(input.value);
+  input.value = "";
+  }
+  });
 
 var otroIp = document.getElementById("otropeerid");
 var connectButton = document.getElementById("connect");
@@ -42,3 +43,11 @@ connectButton.onclick = () => {
 	conn = local.connect(otroIp.value);
     }
 }
+
+// Jquery for chat functionality
+
+$(document).ready(function(){
+    $("#hide").click(function(){
+	$( "p" ).hide();
+    });
+});
