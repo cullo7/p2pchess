@@ -12,8 +12,9 @@ local.on("connection", (otroconn) => {
 	alert("connection opened");
     });
     otroconn.on('data', function(data) {
-        alert("data: " + data);
+        postMessageReceived(data);
     });
+    conn = otroconn;
 });
 
 function sendMessage(s) {
@@ -21,17 +22,18 @@ function sendMessage(s) {
 	alert("connection not established");
     } else {
 	conn.send(s);
-	//post message
+	postMessageSent(s);
+	
     }
 }
 
 var input = document.getElementById("message");
-  input.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-  sendMessage(input.value);
-  input.value = "";
-  }
-  });
+input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+	sendMessage(input.value);
+	input.value = "";
+    }
+});
 
 var otroIp = document.getElementById("otropeerid");
 var connectButton = document.getElementById("connect");
@@ -47,7 +49,16 @@ connectButton.onclick = () => {
 // Jquery for chat functionality
 
 $(document).ready(function(){
-    $("#hide").click(function(){
-	$( "p" ).hide();
-    });
+    postMessageReceived = function(message) {
+	$("#chat").append(
+	    "<div class='receiver'>" + message + " </div>"
+	);
+    }
+
+    postMessageSent = function(message) {
+	$("#chat").append(
+	    "<div class='sender'>" + message + " </div>"
+	);
+    }
+
 });
