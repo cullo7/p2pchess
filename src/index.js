@@ -34,6 +34,7 @@ local.on("open", (id) => {
 });
 
 local.on("connection", (otroconn) => {
+    alert("connection successful");
     otroconn.on('open', function() {
 	if (outgoingConnection == undefined) {
 	    outgoingConnection = local.connect(otroconn.peer);
@@ -46,15 +47,11 @@ local.on("connection", (otroconn) => {
     incomingConnection = otroconn;
 });
 
-function sendMessage(s) {
-    if (outgoingConnection == undefined) {
-    } else {
-	outgoingConnection.send(s);
-	alert("message sent");
-	//	postMessageSent(s);
-    }
-}
 /*
+  function connectToPartner(id) {
+  outgoingConnection = local.connect(id);
+  }
+
   var input = document.getElementById("message");
   input.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
@@ -64,18 +61,9 @@ function sendMessage(s) {
   }
   }
   });
-
-  var otroIp = document.getElementById("otropeerid");
-  otroIp.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-  if (otroIp.value != "") {
-  outgoingConnection = local.connect(otroIp.value);
-  } else {
-  alert("no IP provided");
-  }
-  }
-  });
 */
+
+
 /*
   window.setInterval(function() {
   var elem = document.getElementById('chat');
@@ -176,18 +164,39 @@ class Game extends React.Component {
 }
 
 class Screen extends React.Component {
+
+    constructor(props) {
+	super(props);
+	this.state = {value: ''};
+
+	//	this.handleChange = this.handleChange.bind(this);
+	//	this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+	alert('A name was submitted: ' + this.state.value);
+	//	event.preventDefault();
+    }
+
+
+    handleChange(event) {
+	this.setState({value: event.target.value});
+    }
     render() {
 	return (
 	    <div className = "screen" >
 		<Game/>
 		<div className = "chat">
-		    <form>
+		    <input id="peerid"/><br/>
+
+		    <form onSubmit={this.handleSubmit}>
 			<label>
 			    Name:
-			    <input type="text" name="name" />
+			    <input type="text" value={this.state.value} onChange={this.handleChange} />
 			</label>
 			<input type="submit" value="Submit" />
 		    </form>
+
 		</div>
 	    </div>
 	);
