@@ -4,6 +4,14 @@ import './index.css';
 import Peer from 'peerjs';
 import $ from "jquery";
 
+
+
+
+// peer declarations
+const local = new Peer();
+var incomingConnection = undefined;
+var outgoingConnection = undefined;
+
 //=========================
 // TICTACTOE react code
 //========================
@@ -27,6 +35,44 @@ class Board extends React.Component {
 	    squares: Array(9).fill(null),
 	    xIsNext: true,
 	};
+
+	// fix problems of calling this.handleClick from connection object(i think)
+
+	var boardSelf = this;
+
+	//code for handling p2p connection and data
+	local.on("open", (id) => {
+	    document.getElementById("peerid").value = id;
+	});
+
+	local.on("connection", (otroconn) => {
+	    alert("connection successful");
+	    otroconn.on('open', function() {
+		// upon receiving a connection we open an adjacent connection (outgoing)
+		if (outgoingConnection == undefined) {
+		    outgoingConnection = local.connect(otroconn.peer);
+		}
+	    });
+	    otroconn.on('data', function(data) {
+		boardSelf.handleClick(data);
+	    });
+	    incomingConnection = otroconn;
+	});
+
+    }
+
+    handleSendClick(i) {
+	this.sendClick(i);
+	this.handleClick(i);
+    }
+    
+    sendClick(i) {
+	if (outgoingConnection == undefined) {
+	    alert("no connection established");
+	    return;
+	} else {
+	    outgoingConnection.send(i);
+	}
     }
 
     handleClick(i) {
@@ -44,7 +90,7 @@ class Board extends React.Component {
     renderSquare(i) {
 	return <Square
 		   value={this.state.squares[i]}
-		   onClick={() => this.handleClick(i)}
+		   onClick={() => this.handleSendClick(i)}
 	       />;
     }
 
@@ -104,11 +150,14 @@ class Screen extends React.Component {
 
 	this.handleChange = this.handleChange.bind(this);
 	this.handleSubmit = this.handleSubmit.bind(this);
+
+    }
+    connectToPartner(id) {
+	outgoingConnection = local.connect(id);
     }
 
     handleSubmit(event) {
-	alert('A name was submitted: ' + this.state.value);
-	connectToPartner(this.state.value);
+	this.connectToPartner(this.state.value);
 	event.preventDefault();
     }
 
@@ -176,29 +225,4 @@ function calculateWinner(squares) {
 
 // Peer js handler code
 
-// peer declarations
-const local = new Peer();
-var incomingConnection = undefined;
-var outgoingConnection = undefined;
 
-local.on("open", (id) => {
-    document.getElementById("peerid").value = id;
-});
-
-local.on("connection", (otroconn) => {
-    alert("connection successful");
-    otroconn.on('open', function() {
-	if (outgoingConnection == undefined) {
-	    outgoingConnection = local.connect(otroconn.peer);
-	}
-    });
-    otroconn.on('data', function(data) {
-	alert("messaged received");
-	//        postMessageReceived(data);
-    });
-    incomingConnection = otroconn;
-});
-
-function connectToPartner(id) {
-    outgoingConnection = local.connect(id);
-}
