@@ -3,73 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Peer from 'peerjs';
 import $ from "jquery";
-/*
-
-// Jquery for chat functionality
-
-function postMessageReceived(message) {
-//    $(".chat").append(
-//	"<div class='receiver message'>" + message + " </div>"
-//  );
-alert("msg received");
-}
-
-function postMessageSent(message) {
-//    $(".chat").append(
-//	"<div class='sender message'>" + message + " </div>"
-//  );
-alert("msg sent");
-}
-
-*/
-
-
-// peer declarations
-const local = new Peer();
-var incomingConnection = undefined;
-var outgoingConnection = undefined;
-
-local.on("open", (id) => {
-    document.getElementById("peerid").value = id;
-});
-
-local.on("connection", (otroconn) => {
-    alert("connection successful");
-    otroconn.on('open', function() {
-	if (outgoingConnection == undefined) {
-	    outgoingConnection = local.connect(otroconn.peer);
-	}
-    });
-    otroconn.on('data', function(data) {
-	alert("messaged received");
-	//        postMessageReceived(data);
-    });
-    incomingConnection = otroconn;
-});
-
-/*
-  function connectToPartner(id) {
-  outgoingConnection = local.connect(id);
-  }
-
-  var input = document.getElementById("message");
-  input.addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-  if (input.value != "") {
-  sendMessage(input.value);
-  input.value = "";
-  }
-  }
-  });
-*/
-
-
-/*
-  window.setInterval(function() {
-  var elem = document.getElementById('chat');
-  elem.scrollTop = elem.scrollHeight;
-  }, 500);
-*/
 
 //=========================
 // TICTACTOE react code
@@ -169,13 +102,14 @@ class Screen extends React.Component {
 	super(props);
 	this.state = {value: ''};
 
-	//	this.handleChange = this.handleChange.bind(this);
-	//	this.handleSubmit = this.handleSubmit.bind(this);
+	this.handleChange = this.handleChange.bind(this);
+	this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
 	alert('A name was submitted: ' + this.state.value);
-	//	event.preventDefault();
+	connectToPartner(this.state.value);
+	event.preventDefault();
     }
 
 
@@ -233,4 +167,38 @@ function calculateWinner(squares) {
 	}
     }
     return null;
+}
+
+//=========================
+// End of REACT code
+//========================
+
+
+// Peer js handler code
+
+// peer declarations
+const local = new Peer();
+var incomingConnection = undefined;
+var outgoingConnection = undefined;
+
+local.on("open", (id) => {
+    document.getElementById("peerid").value = id;
+});
+
+local.on("connection", (otroconn) => {
+    alert("connection successful");
+    otroconn.on('open', function() {
+	if (outgoingConnection == undefined) {
+	    outgoingConnection = local.connect(otroconn.peer);
+	}
+    });
+    otroconn.on('data', function(data) {
+	alert("messaged received");
+	//        postMessageReceived(data);
+    });
+    incomingConnection = otroconn;
+});
+
+function connectToPartner(id) {
+    outgoingConnection = local.connect(id);
 }
