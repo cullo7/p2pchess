@@ -33,8 +33,9 @@ class Board extends React.Component {
 	super(props);
 	this.state = {
 	    squares: Array(9).fill(null),
-	    xIsNext: true,
 	    iAmNext: true,
+	    playerId:0,
+	    symbol: '',
 	};
 
 	// fix problems of calling this.handleClick from connection object(i think)
@@ -53,7 +54,6 @@ class Board extends React.Component {
 		if (outgoingConnection == undefined) {
 		    outgoingConnection = local.connect(otroconn.peer);
 		    // after second connection
-		    //alert("in here");
 		} else {
 		    boardSelf.startGame();
 		}
@@ -67,6 +67,14 @@ class Board extends React.Component {
 		    console.log("go second read");
 		    boardSelf.setState({
 			iAmNext: false,
+			playerId: 1,
+			symbol: 'X',
+		    });
+		} else if (data == "go first") {
+		    boardSelf.setState({
+			playerId: 2,
+			symbol: 'O',
+			
 		    });
 		} else {
 		    boardSelf.receiveClick(data);
@@ -89,8 +97,15 @@ class Board extends React.Component {
 	if (Math.random() * 2 > 1) {
 	    this.setState({
 		iAmNext: false,
+		playerId: 1,
+		symbol: 'X',
 	    });
+	    this.tryToSendMessage("go first");
 	} else {
+	    this.setState({
+		playerId: 2,
+		symbol: 'O',		
+	    });
 	    this.tryToSendMessage("go second");
 	}
     }
@@ -105,10 +120,13 @@ class Board extends React.Component {
 
     receiveClick(i) {
 	const squares = this.state.squares.slice();
-	squares[i] = this.state.xIsNext ? 'X' : 'O';
+	if (this.state.symbol == 'X') {
+	    squares[i] = 'O';
+	} else {
+	    squares[i] = 'X';
+	}
 	this.setState({
 	    squares: squares,
-	    xIsNext: !this.state.xIsNext,
 	    iAmNext: !this.state.iAmNext,
 	});
 
@@ -149,10 +167,9 @@ class Board extends React.Component {
 	    console.log(" move not permitted");
 	    return;
 	}
-	squares[i] = this.state.xIsNext ? 'X' : 'O';
+	squares[i] = this.state.symbol;
 	this.setState({
 	    squares: squares,
-	    xIsNext: !this.state.xIsNext,
 	    iAmNext: !this.state.iAmNext,
 	});
     }
@@ -167,14 +184,36 @@ class Board extends React.Component {
     render() {
 	const winner = calculateWinner(this.state.squares);
 	let status;
+	let nextPlayer;
 	if (winner) {
-	    status = 'Winner: ' + winner;
+	    if (this.state.symbol == winner) {
+		nextPlayer = this.state.playerId;
+	    } else {
+		if (this.state.playerId == 1) {
+		    nextPlayer = 2;
+		} else {
+		    nextPlayer = 1;
+		}
+	    }
+	    status = 'Winner: Player ' + nextPlayer;
+	} else if (this.state.playerId == 0) {
+	    status = "New game";
 	} else {
-	    status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+	    if (this.state.iAmNext) {
+		nextPlayer = this.state.playerId;
+	    } else {
+		if (this.state.playerId == 1) {
+		    nextPlayer = 2;
+		} else {
+		    nextPlayer = 1;
+		}
+	    }
+	    status = 'Player ' + nextPlayer + ' it is your turn';
 	}
 
 	return (
 	    <div>
+		<div className="playerid"> You are Player {this.state.playerId}, playing with {this.state.symbol}</div>
 		<div className="status">{status}</div>
 		<div className="board-row">
 		    {this.renderSquare(0)}
@@ -245,7 +284,7 @@ class Screen extends React.Component {
 
 		    <form onSubmit={this.handleSubmit}>
 			<label>
-			    Name:
+			    Partner peer id:
 			    <input type="text" value={this.state.value} onChange={this.handleChange} />
 			</label>
 			<input type="submit" value="Submit" />
