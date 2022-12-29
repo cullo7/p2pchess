@@ -34,6 +34,7 @@ class Board extends React.Component {
 	this.state = {
 	    squares: Array(9).fill(null),
 	    xIsNext: true,
+	    iAmNext: true,
 	};
 
 	// fix problems of calling this.handleClick from connection object(i think)
@@ -46,44 +47,113 @@ class Board extends React.Component {
 	});
 
 	local.on("connection", (otroconn) => {
-	    alert("connection successful");
+	    console.log("connection successful");
 	    otroconn.on('open', function() {
 		// upon receiving a connection we open an adjacent connection (outgoing)
 		if (outgoingConnection == undefined) {
 		    outgoingConnection = local.connect(otroconn.peer);
+		    // after second connection
+		    //alert("in here");
+		} else {
+		    boardSelf.startGame();
 		}
+
 	    });
 	    otroconn.on('data', function(data) {
-		boardSelf.handleClick(data);
+		//alert("data detected");
+		//alert(data);
+		console.log(data);
+		if (data == "go second"){
+		    console.log("go second read");
+		    boardSelf.setState({
+			iAmNext: false,
+		    });
+		} else {
+		    boardSelf.receiveClick(data);
+		}
 	    });
 	    incomingConnection = otroconn;
+	    otroconn.on('error', function(err) {
+		    console.log(err);
+	    });
+
 	});
 
+	local.on('error', function(err) {
+	    console.log(err);
+	});
     }
 
+    startGame() {
+	console.log("start game called");
+	if (Math.random() * 2 > 1) {
+	    this.setState({
+		iAmNext: false,
+	    });
+	} else {
+	    this.tryToSendMessage("go second");
+	}
+    }
+
+    tryToSendMessage(message) {
+	if (outgoingConnection == undefined) {
+	    console.log("no connection to send message");
+	} else {
+	    outgoingConnection.send(message);
+	}
+    }
+
+    receiveClick(i) {
+	const squares = this.state.squares.slice();
+	squares[i] = this.state.xIsNext ? 'X' : 'O';
+	this.setState({
+	    squares: squares,
+	    xIsNext: !this.state.xIsNext,
+	    iAmNext: !this.state.iAmNext,
+	});
+
+    }	
+
     handleSendClick(i) {
-	this.sendClick(i);
+	if(!this.sendClick(i)) {
+	    return;
+	}
 	this.handleClick(i);
     }
     
     sendClick(i) {
 	if (outgoingConnection == undefined) {
-	    alert("no connection established");
+	    console.log("no connection established");
 	    return;
-	} else {
-	    outgoingConnection.send(i);
 	}
+	const squares = this.state.squares.slice();
+	if(!this.checkMove(squares, i)) {
+	    console.log(" move not permitted");
+	    return false;
+	}
+	outgoingConnection.send(i);
+	return true;
+    }
+
+    checkMove(squares, i) {
+	if (calculateWinner(squares) || squares[i] || !this.state.iAmNext) {
+	    console.log(this.state.iAmNext);
+	    return false;
+	}
+	return true;
     }
 
     handleClick(i) {
 	const squares = this.state.squares.slice();
-	if (calculateWinner(squares) || squares[i]) {
+	if(!this.checkMove(squares, i)) {
+	    console.log(" move not permitted");
 	    return;
 	}
 	squares[i] = this.state.xIsNext ? 'X' : 'O';
 	this.setState({
 	    squares: squares,
 	    xIsNext: !this.state.xIsNext,
+	    iAmNext: !this.state.iAmNext,
 	});
     }
     
@@ -152,6 +222,7 @@ class Screen extends React.Component {
 	this.handleSubmit = this.handleSubmit.bind(this);
 
     }
+    
     connectToPartner(id) {
 	outgoingConnection = local.connect(id);
     }
@@ -223,6 +294,10 @@ function calculateWinner(squares) {
 //========================
 
 
-// Peer js handler code
+// auxiliary functions
 
-
+function timeout () {
+    	    setTimeout(() => {
+		console.log("Delayed for 1 second.");
+	    }, 1000);
+}
