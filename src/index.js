@@ -151,7 +151,7 @@ class Board extends React.Component {
     }
 
     checkMove(squares, i) {
-	if (calculateWinner(squares) || squares[i] || !this.state.iAmNext) {
+	if (false || squares[i] || !this.state.iAmNext) {
 	    console.log(this.state.iAmNext);
 	    return false;
 	}
@@ -179,7 +179,7 @@ class Board extends React.Component {
     }
 
     render() {
-	const winner = calculateWinner(this.state.squares);
+	const winner = false;
 	let status;
 	let nextPlayer;
 	if (winner) {
@@ -214,18 +214,83 @@ class Board extends React.Component {
 		<div className="status">{status}</div>
 		<div className="board-row">
 		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
 		    {this.renderSquare(1)}
 		    {this.renderSquare(2)}
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(3)}
-		    {this.renderSquare(4)}
-		    {this.renderSquare(5)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(6)}
-		    {this.renderSquare(7)}
-		    {this.renderSquare(8)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
+		</div>
+		<div className="board-row">
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
+		</div>
+		<div className="board-row">
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
+		</div>
+		<div className="board-row">
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
+		</div>
+		<div className="board-row">
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
+		</div>
+		<div className="board-row">
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(0)}
+		    {this.renderSquare(1)}
+		    {this.renderSquare(2)}
 		</div>
 	    </div>
 	);
@@ -275,6 +340,7 @@ class Screen extends React.Component {
 
 	this.handleChange = this.handleChange.bind(this);
 	this.handleSubmit = this.handleSubmit.bind(this);
+	
 
     }
     
@@ -291,6 +357,9 @@ class Screen extends React.Component {
     handleChange(event) {
 	this.setState({value: event.target.value});
     }
+
+    
+    
     render() {
 	return (
 	    <div className = "screen" >
@@ -321,34 +390,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Screen />);
 
 // ========================================
-// auxiliary functions
-
-
-function calculateWinner(squares) {
-    const lines = [
-	[0, 1, 2],
-	[3, 4, 5],
-	[6, 7, 8],
-	[0, 3, 6],
-	[1, 4, 7],
-	[2, 5, 8],
-	[0, 4, 8],
-	[2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-	const [a, b, c] = lines[i];
-	if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-	    return squares[a];
-	}
-    }
-    return null;
-}
-
-//=========================
-// End of REACT code
-//========================
-
-
 // auxiliary functions
 
 function timeout () {
