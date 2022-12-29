@@ -2,10 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Peer from 'peerjs';
-import $ from "jquery";
-
-
-
+import $ from 'jquery';
 
 // peer declarations
 const local = new Peer();
@@ -251,6 +248,25 @@ class Game extends React.Component {
     }
 }
 
+class Chat extends React.Component {
+    constructor(props){
+	super(props);
+    }
+    
+    addMessage() {
+	$(".chat").append("<div className='message'> new message</div>");
+    }
+    
+    render() {
+	return (
+	    <div className="chat" >
+		<button onClick={this.addMessage}> add message </button>
+		{this.children}
+	    </div>
+	)
+    }
+}
+
 class Screen extends React.Component {
 
     constructor(props) {
@@ -279,7 +295,7 @@ class Screen extends React.Component {
 	return (
 	    <div className = "screen" >
 		<Game/>
-		<div className = "chat">
+		<div className = "credentials">
 		    <input id="peerid"/><br/>
 
 		    <form onSubmit={this.handleSubmit}>
@@ -289,7 +305,7 @@ class Screen extends React.Component {
 			</label>
 			<input type="submit" value="Submit" />
 		    </form>
-
+		    <Chat/>
 		</div>
 	    </div>
 	);
