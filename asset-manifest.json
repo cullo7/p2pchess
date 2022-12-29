@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/p2pchess/static/css/main.22941023.css",
-    "main.js": "/p2pchess/static/js/main.0819f4a9.js",
+    "main.js": "/p2pchess/static/js/main.5008c1df.js",
     "index.html": "/p2pchess/index.html",
     "main.22941023.css.map": "/p2pchess/static/css/main.22941023.css.map",
-    "main.0819f4a9.js.map": "/p2pchess/static/js/main.0819f4a9.js.map"
+    "main.5008c1df.js.map": "/p2pchess/static/js/main.5008c1df.js.map"
   },
   "entrypoints": [
     "static/css/main.22941023.css",
-    "static/js/main.0819f4a9.js"
+    "static/js/main.5008c1df.js"
   ]
 }
