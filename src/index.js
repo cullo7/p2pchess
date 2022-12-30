@@ -13,23 +13,12 @@ var outgoingConnection = undefined;
 // TICTACTOE react code
 //========================
 
-class Square extends React.Component {
-    render() {
-	return (
-	    <button className="square"
-		    onClick={() => this.props.onClick()}
-	    >
-		{this.props.value}
-	    </button>
-	);
-    }
-}
 
 class Board extends React.Component {
     constructor(props) {
 	super(props);
 	this.state = {
-	    squares: Array(9).fill(null),
+	    squares: Array(64).fill(null),
 	    iAmNext: true,
 	    playerId:0,
 	    symbol: '',
@@ -79,7 +68,7 @@ class Board extends React.Component {
 	    });
 	    incomingConnection = otroconn;
 	    otroconn.on('error', function(err) {
-		    console.log(err);
+		console.log(err);
 	    });
 
 	});
@@ -171,11 +160,12 @@ class Board extends React.Component {
 	});
     }
     
-    renderSquare(i) {
-	return <Square
-		   value={this.state.squares[i]}
-		   onClick={() => this.handleSendClick(i)}
-	       />;
+    renderRow(color) {
+	if (color  === "white") {
+	    return <Row color={"white"}/>;
+	} else {
+	    return <Row color={"black"}/>;
+	}
     }
 
     render() {
@@ -213,89 +203,88 @@ class Board extends React.Component {
 		<div className="playerid"> You are Player {this.state.playerId}, playing with {this.state.symbol}</div>
 		<div className="status">{status}</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("white")}
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("brown")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("white")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("brown")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("white")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("brown")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("white")}
+
 		</div>
 		<div className="board-row">
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(0)}
-		    {this.renderSquare(1)}
-		    {this.renderSquare(2)}
+		    {this.renderRow("brown")}
 		</div>
 	    </div>
 	);
     }
 }
+
+class Row extends React.Component {
+    render() {
+	if (this.props.color === "white"){
+	    return (
+		<>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		</>
+	    );
+	} else {
+	    return (
+		<>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		    <Square color="brown"/>
+		    <Square color="white"/>
+		</>
+
+
+	    );
+	}
+    }
+}
+
+class Square extends React.Component {
+    render() {
+	return (
+	    <button className="square"
+		    onClick={() => this.props.onClick()}
+		    style={{backgroundColor: this.props.color}}
+		    
+	    >
+		{this.props.value}
+	    </button>
+	);
+    }
+}
+
 
 class Game extends React.Component {
     render() {
@@ -393,7 +382,7 @@ root.render(<Screen />);
 // auxiliary functions
 
 function timeout () {
-    	    setTimeout(() => {
-		console.log("Delayed for 1 second.");
-	    }, 1000);
+    setTimeout(() => {
+	console.log("Delayed for 1 second.");
+    }, 1000);
 }

@@ -24,12 +24,12 @@ ol, ul {
     font-size: 24px;
     font-weight: bold;
     line-height: 34px;
-    height: 10px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 10px;
+    height: 30px;
+    width: 30px;
 }
 
 .square:focus {
@@ -80,4 +80,10 @@ ol, ul {
 }
 body {
     background-color: #87CEEB;
+}
+.white {
+    background-color:white;
+}
+.blackk {
+    background-color:black;
 }
