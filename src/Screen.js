@@ -15,15 +15,13 @@ export default class Screen extends React.Component {
 
 	this.handleSubmit = this.handleSubmit.bind(this);
 	this.handleChange = this.handleChange.bind(this);
-	
-	this.initializeP2P();
 
-	var screenSelf = this;
+	this.initializeP2P(this);
 
     }
 
     // setup p2p connection listeners
-    initializeP2P() {
+    initializeP2P(screenSelf) {
 
 	// listener for when our peer node is created
 	this.state.local.on("open", (id) => {
@@ -36,8 +34,8 @@ export default class Screen extends React.Component {
 	    otroconn.on('open', function() {
 		// upon receiving a connection we open an adjacent connection (outgoing)
 		if (screenSelf.state.outgoingConnection == undefined) {
-		    this.setState({
-			outgoingConnection: this.state.local.connect(otroconn.peer),
+		    screenSelf.setState({
+			outgoingConnection: screenSelf.state.local.connect(otroconn.peer),
 		    });
 		}
 
