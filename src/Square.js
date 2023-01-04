@@ -5,7 +5,7 @@ export default class Square extends React.Component {
 	return (
 	    <button className="square"
 		    onClick={() => this.props.onClick()}
-		    style={{backgroundColor: this.props.color}}	    
+		    style={{backgroundColor: 'red'}}	    
 	    >
 		1
 	    </button>

@@ -51,7 +51,8 @@ export default class Screen extends React.Component {
 	    });
 
 	    this.incomingConnection = otroconn;
-
+	    b
+	    
 	});
 
 	this.state.local.on('error', function(err) {
