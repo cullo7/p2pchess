@@ -6,6 +6,12 @@
     border: 0;
     width: 30px;
     height: 30px;
+    padding:0;
+}
+
+.piece {
+    width:25px;
+    height:25px;
 }
 .message {
     outline:solid;

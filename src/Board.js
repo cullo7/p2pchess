@@ -95,7 +95,7 @@ export default class Board extends React.Component {
 
     renderBoard() {
 	return this.state.squares.map((square,index) => (
-	    <Square key={index} color={index % 2 == 0 ? "red" : "white"}/>
+	    <Square key={index} id={index}/>
 	));
 				     
     }
