@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 import Square from './Square.js';
@@ -92,15 +93,18 @@ export default class Board extends React.Component {
 	console.log("click handled");
     }
 
-    renderSquare() {
-
+    renderBoard() {
+	return this.state.squares.map((square,index) => (
+	    <Square key={index} color={index % 2 == 0 ? "red" : "white"}/>
+	));
+				     
     }
     
     render() {
 	return (
-	    <>
-		{this.state.squares.map((square,index) => <Square key={index}/>)}
-	    </>
+	    <div className="board">
+		{this.renderBoard()}
+	    </div>
 	);
     }
 }
