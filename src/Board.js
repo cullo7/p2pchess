@@ -21,7 +21,7 @@ export default class Board extends React.Component {
 
     renderBoard() {
 	return this.state.squares.map((square,index) => (
-	    <Square key={index} id={index}/>
+	    <Square key={index} id={index} onClick={this.props.click}/>
 	));
 				     
     }

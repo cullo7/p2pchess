@@ -20,6 +20,10 @@ export default class Screen extends React.Component {
 
     }
 
+    move() {
+	console.log("passed");
+    }
+
     // setup p2p connection listeners
     initializeP2P(screenSelf) {
 
@@ -51,7 +55,6 @@ export default class Screen extends React.Component {
 	    });
 
 	    this.incomingConnection = otroconn;
-	    b
 	    
 	});
 
@@ -78,7 +81,7 @@ export default class Screen extends React.Component {
     render() {
 	return (
 	    <div className = "screen" >
-		<Game state={this.state}/>
+		<Game click={this.move}/>
 		<div className = "credentials">
 		    <input id="peerid"/><br/>
 
