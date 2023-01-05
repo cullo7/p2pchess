@@ -1,6 +1,5 @@
 import React from 'react';
-import Game from './Game.js';
-import Chat from './Chat.js';
+import Board from './Game.js';
 import Peer from 'peerjs';
 
 export default class Screen extends React.Component {
@@ -15,13 +14,22 @@ export default class Screen extends React.Component {
 
 	this.handleSubmit = this.handleSubmit.bind(this);
 	this.handleChange = this.handleChange.bind(this);
+	this.move = this.move.bind(this);
 
 	this.initializeP2P(this);
 
     }
 
     move() {
-	console.log("passed");
+	console.log("move");
+	/*
+	if(this.state.outgoingConnection == undefined) {
+	    alert("no connection established");
+	} else {
+	    this.state.outgoingConnection.send("1");
+	    console.log("1 sent");
+	}
+	*/
     }
 
     // setup p2p connection listeners
@@ -81,7 +89,9 @@ export default class Screen extends React.Component {
     render() {
 	return (
 	    <div className = "screen" >
-		<Game click={this.move}/>
+		<div className="game-board">		    
+		    <Board click={this.move}/>
+		</div>
 		<div className = "credentials">
 		    <input id="peerid"/><br/>
 
@@ -92,7 +102,6 @@ export default class Screen extends React.Component {
 			</label>
 			<input type="submit" value="Submit" />
 		    </form>
-		    <Chat/>
 		</div>
 	    </div>
 	);

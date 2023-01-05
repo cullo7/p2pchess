@@ -87,6 +87,7 @@ export default class Square extends React.Component {
 		    onClick={() => this.props.onClick()}
 		    style={{backgroundColor: this.getColor()}}
 	    >
+		{this.getPiece()}
 	    </button>
 	);
     }
