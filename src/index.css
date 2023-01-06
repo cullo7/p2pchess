@@ -1,12 +1,15 @@
 .board {
     width: 240px;
+    height:240px;
 }
 .square {
     outline:solid;
     border: 0;
     width: 30px;
     height: 30px;
-    padding:0;
+    padding: 0;
+    margin: 0;
+    float: left;
 }
 
 .piece {
@@ -38,7 +41,6 @@
 }
 .screen {
     width: fit-content;
-
     margin: 0 auto;
 }
 body {
@@ -49,4 +51,7 @@ body {
 }
 .blackk {
     background-color:black;
+}
+.credentials {
+    padding: 5px;
 }

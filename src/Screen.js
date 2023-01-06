@@ -1,5 +1,5 @@
 import React from 'react';
-import Board from './Game.js';
+import Board from './Board.js';
 import Peer from 'peerjs';
 
 export default class Screen extends React.Component {
@@ -89,9 +89,7 @@ export default class Screen extends React.Component {
     render() {
 	return (
 	    <div className = "screen" >
-		<div className="game-board">		    
-		    <Board click={this.move}/>
-		</div>
+		<Board click={this.move}/>
 		<div className = "credentials">
 		    <input id="peerid"/><br/>
 
