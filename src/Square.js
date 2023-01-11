@@ -13,12 +13,14 @@ import bpawn from './media/black/Pawn.png';
 import wbishop from './media/white/Bishop.png';
 import bbishop from './media/black/Bishop.png';
 
+var BOARD_WIDTH = 8;
+
 export default class Square extends React.Component {
 
 	getImg() {
 		let state = this.props.getPieceInfo();
 		if (state !== undefined) {
-			let color = state.color ? "./white" : "./black";
+			let color = state.color;
 			switch (state.piece) {
 				case "kn":
 					return this.getImgBySrc(color ? wknight : bknight);
@@ -46,20 +48,25 @@ export default class Square extends React.Component {
 	}
 
 	getColor() {
-		if (this.row % 2 === 0) {
-			return this.index % 2 === 0 ? "red" : "white";
+		let index = this.props.id;
+		let row = Math.floor(index / BOARD_WIDTH);
+		if (row % 2 !== 0) {
+			return index % 2 === 0 ? "red" : "white";
 		} else {
-			return this.index % 2 === 0 ? "white" : "red";
+			return index % 2 === 0 ? "white" : "red";
 		}
 	}
 
 	render() {
 		return (
-			<div
-				className="square"
-				style={{ backgroundColor: this.getColor() }}
-			>
-				{this.getImg()}
+			<div>
+				<button
+					className="square"
+					style={{ backgroundColor: this.getColor()}}
+					onClick={() => this.props.move()}
+				>
+					{this.getImg()}
+				</button>
 			</div>
 		);
 	}

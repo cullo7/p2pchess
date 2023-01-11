@@ -4,8 +4,9 @@ import Square from './Square.js';
 
 // Global vars
 var BOARD_WIDTH = 8;
-var WHITE_SIDE = 14;
-var NUM_SQUARES = 64;
+var WHITE_SIDE = 15;
+var WHITE = 1;
+var BLACK = 0;
 
 export default class Game extends React.Component {
 
@@ -37,116 +38,114 @@ export default class Game extends React.Component {
 					squares[index] = this.setPawn(index);
 					break;
 				default:
+				//add setting default values for squares without pieces
 			}
 		}
 
 		this.setState({
 			squares: squares,
 		});
-
 	}
 
 	setMainPiece(index) {
+		let color;
+		if(index <= WHITE_SIDE) {
+			color = BLACK;
+		} else {
+			color = WHITE;
+		}
 		switch (index % BOARD_WIDTH) {
 			case 0:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "r"
+				};
 			case 1:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "kn"
+				};
 			case 2:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "b"
+				};
 			case 3:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "q"
+				};
 			case 4:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "k"
+				};
 			case 5:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "b"
+				};
 			case 6:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "kn"
+				};
 			case 7:
-				return this.setRook(index)
-				break;
+				return {
+					color: color,
+					piece: "r"
+				};
 			default:
 				console.log("rowIndex invalid value");
 				return;
 		}
 	}
 
-	setRook(index) {
-		//	if (index > 0) {
-		return this.updateSquare(index);
-
-		/*
-		  } else {
-		  this.updateSquare(index, {
-		  color:"black",
-		  piece:"r"
-		  });
-		  }
-		*/
-	}
-
 	setPawn(index) {
-		// if (index > WHITE_SIDE) {
-		// 	this.updateSquare(index, {
-		// 		color: 0,
-		// 		piece: "p"
-		// 	})
-		// } else {
-		// 	this.updateSquare(index, {
-		// 		color: 1,
-		// 		piece: "p"
-		// 	})
-		// }
-		return this.updateSquare(index);
-
-	}
-
-	updateSquare(index) {
-		const squares = this.state.squares.slice();
-		return {
-			color: 0,
-			piece: "p"
-		};
-		// if (index === NUM_SQUARES) {
-		// 	this.setState({
-		// 		ready: true,
-		// 	});
-		// }
+		if (index > WHITE_SIDE) {
+			return {
+				color: WHITE,
+				piece: "p"
+			};
+		} else {
+			return {
+				color: BLACK,
+				piece: "p"
+			};
+		}
 	}
 
 	getPieceInfo(index) {
-		if (this.state.squares[index].color === undefined) {
-			console.log("value not available");
-		} else {
-			console.log("defined", this.state.squares[index]);
+		if (this.state.squares[index].color !== undefined) {
 			return this.state.squares[index];
 		}
 	}
 
-	setVal() {
-		console.log("setting val");
-		const squares = this.state.squares.slice();
-		squares[0] = {
-			color: 1,
-			piece: "k",
-		};
-		this.setState({
-			squares: squares,
-		});
+	//unfinished
+	checkMoves(index) {
+		const square = this.state.squares[index];
+		switch (square.piece) {
+			case "kn":
+				return;
+			case "k":
+				return;
+			case "r":
+				return;
+			case "b":
+				return;
+			case "q":
+				return;
+			case "p":
+				return;
+			default:
+		}
 	}
 
 	render() {
 		return (
 			<div>
-				{this.state.squares.slice(0, 5).map((square, index) => (
-					<Square key={index} id={index} getPieceInfo={() => this.getPieceInfo(index)} letter={this.state.squares[index].piece} />
+				{this.state.squares.map((square, index) => (
+					<Square key={index} id={index} getPieceInfo={() => this.getPieceInfo(index)} checkMoves={() => this.checkMoves(index)}/>
 				))}
 			</div>
 		);
