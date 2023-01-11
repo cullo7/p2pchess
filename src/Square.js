@@ -17,25 +17,24 @@ export default class Square extends React.Component {
 
 	getImg() {
 		let state = this.props.getPieceInfo();
-		console.log("state", state);
-		// if (state.color !== undefined) {
-		// 	let color = state.color ? "./white" : "./black";
-		// 	switch (state.piece) {
-		// 		case "kn":
-		// 			return this.getImgBySrc(color ? wknight : bknight);
-		// 		case "k":
-		// 			return this.getImgBySrc(color ? wking : bking);
-		// 		case "r":
-		// 			return this.getImgBySrc(color ? wrook : brook);
-		// 		case "b":
-		// 			return this.getImgBySrc(color ? wbishop : bbishop);
-		// 		case "q":
-		// 			return this.getImgBySrc(color ? wqueen : bqueen);
-		// 		case "p":
-		// 			return this.getImgBySrc(color ? wpawn : bpawn);
-		// 		default:
-		// 	}
-		// }
+		if (state !== undefined) {
+			let color = state.color ? "./white" : "./black";
+			switch (state.piece) {
+				case "kn":
+					return this.getImgBySrc(color ? wknight : bknight);
+				case "k":
+					return this.getImgBySrc(color ? wking : bking);
+				case "r":
+					return this.getImgBySrc(color ? wrook : brook);
+				case "b":
+					return this.getImgBySrc(color ? wbishop : bbishop);
+				case "q":
+					return this.getImgBySrc(color ? wqueen : bqueen);
+				case "p":
+					return this.getImgBySrc(color ? wpawn : bpawn);
+				default:
+			}
+		}
 	}
 
 	getImgBySrc(source) {

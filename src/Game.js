@@ -16,60 +16,61 @@ export default class Game extends React.Component {
 				color: undefined,
 				piece: undefined,
 			}),
-			ready: false,
 		};
 	}
 
 	componentDidMount() {
-		console.log("start mount");
 		this.initializeBoard();
-		console.log("finish mount");
 	}
 
 	initializeBoard() {
-		console.log("init");
+		const squares = this.state.squares.slice();
 		for (let index = 0; index < this.state.squares.length; index++) {
 			let row = Math.floor(index / BOARD_WIDTH);
 			switch (row) {
 				case 0:
 				case 7:
-					this.setMainPiece(index);
+					squares[index] = this.setMainPiece(index);
 					break;
 				case 1:
 				case 6:
-					this.setPawn(index);
+					squares[index] = this.setPawn(index);
 					break;
 				default:
 			}
 		}
+
+		this.setState({
+			squares: squares,
+		});
+
 	}
 
 	setMainPiece(index) {
 		switch (index % BOARD_WIDTH) {
 			case 0:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 1:
-				this.setRook(index)
-
+				return this.setRook(index)
 				break;
 			case 2:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 3:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 4:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 5:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 6:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			case 7:
-				this.setRook(index)
+				return this.setRook(index)
 				break;
 			default:
 				console.log("rowIndex invalid value");
@@ -77,25 +78,10 @@ export default class Game extends React.Component {
 		}
 	}
 
-	updateSquare(index, state) {
-		const squares = this.state.squares.slice();
-		squares[index] = state;
-		this.setState({
-			squares: squares,
-		});
-		if (index === NUM_SQUARES) {
-			this.setState({
-				ready: true,
-			});
-		}
-	}
-
 	setRook(index) {
 		//	if (index > 0) {
-		this.updateSquare(index, {
-			color: 1,
-			piece: "r"
-		});
+		return this.updateSquare(index);
+
 		/*
 		  } else {
 		  this.updateSquare(index, {
@@ -107,35 +93,61 @@ export default class Game extends React.Component {
 	}
 
 	setPawn(index) {
-		if (index > WHITE_SIDE) {
-			this.updateSquare(index, {
-				color: 0,
-				piece: "p"
-			})
-		} else {
-			this.updateSquare(index, {
-				color: 1,
-				piece: "p"
-			})
-		}
+		// if (index > WHITE_SIDE) {
+		// 	this.updateSquare(index, {
+		// 		color: 0,
+		// 		piece: "p"
+		// 	})
+		// } else {
+		// 	this.updateSquare(index, {
+		// 		color: 1,
+		// 		piece: "p"
+		// 	})
+		// }
+		return this.updateSquare(index);
+
+	}
+
+	updateSquare(index) {
+		const squares = this.state.squares.slice();
+		return {
+			color: 0,
+			piece: "p"
+		};
+		// if (index === NUM_SQUARES) {
+		// 	this.setState({
+		// 		ready: true,
+		// 	});
+		// }
 	}
 
 	getPieceInfo(index) {
-		console.log("getPiece");
-		if(this.state.squares[index].color === undefined) {
+		if (this.state.squares[index].color === undefined) {
 			console.log("value not available");
 		} else {
-			return this.state.squares[index]
+			console.log("defined", this.state.squares[index]);
+			return this.state.squares[index];
 		}
+	}
+
+	setVal() {
+		console.log("setting val");
+		const squares = this.state.squares.slice();
+		squares[0] = {
+			color: 1,
+			piece: "k",
+		};
+		this.setState({
+			squares: squares,
+		});
 	}
 
 	render() {
 		return (
 			<div>
 				{this.state.squares.slice(0, 5).map((square, index) => (
-					<Square key={index} id={index} getPieceInfo={() => this.getPieceInfo(index)} />
+					<Square key={index} id={index} getPieceInfo={() => this.getPieceInfo(index)} letter={this.state.squares[index].piece} />
 				))}
-
 			</div>
 		);
 	}
