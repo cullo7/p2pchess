@@ -3,13 +3,14 @@
     height:240px;
 }
 .square {
-    outline:solid;
-    border: 0;
     width: 30px;
     height: 30px;
     padding: 0;
     margin: 0;
     float: left;
+    border: 1px solid;
+    background: transparent;
+    text-decoration: underline;
 }
 
 .piece {

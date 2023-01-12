@@ -62,8 +62,11 @@ export default class Square extends React.Component {
 			<div>
 				<button
 					className="square"
-					style={{ backgroundColor: this.getColor()}}
-					onClick={() => this.props.move()}
+					style={{ 
+						backgroundColor: this.getColor(),
+						borderColor: this.props.highlight ? "green": "black",
+					}}
+					onClick={() => this.props.checkMoves()}
 				>
 					{this.getImg()}
 				</button>

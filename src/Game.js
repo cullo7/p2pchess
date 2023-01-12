@@ -7,6 +7,7 @@ var BOARD_WIDTH = 8;
 var WHITE_SIDE = 15;
 var WHITE = 1;
 var BLACK = 0;
+var NUM_SQUARES = 64;
 
 export default class Game extends React.Component {
 
@@ -17,6 +18,7 @@ export default class Game extends React.Component {
 				color: undefined,
 				piece: undefined,
 			}),
+			highlights: new Array(64).fill(0),
 		};
 	}
 
@@ -49,7 +51,7 @@ export default class Game extends React.Component {
 
 	setMainPiece(index) {
 		let color;
-		if(index <= WHITE_SIDE) {
+		if (index <= WHITE_SIDE) {
 			color = BLACK;
 		} else {
 			color = WHITE;
@@ -126,26 +128,71 @@ export default class Game extends React.Component {
 		const square = this.state.squares[index];
 		switch (square.piece) {
 			case "kn":
-				return;
+				this.highlightKnight(index);
+				break;
 			case "k":
-				return;
+				this.highlightKnight(index);
+				break;
 			case "r":
-				return;
+				this.highlightKnight(index);
+				break;
 			case "b":
-				return;
+				this.highlightKnight(index);
+				break;
 			case "q":
-				return;
+				this.highlightKnight(index);
+				break;
 			case "p":
-				return;
+				this.highlightKnight(index);
+				break;
 			default:
 		}
+	}
+
+	highlightKnight(index) {
+		// north
+		// up 2, right 1
+		this.highlight(index - 2 * BOARD_WIDTH + 1);
+		// up 2, left 1
+		this.highlight(index - 2 * BOARD_WIDTH - 1);
+		// right
+		// right 2, up 1
+		this.highlight(index + 2 + 1 * BOARD_WIDTH);
+		// right 2, down 1
+		this.highlight(index + 2 - 1 * BOARD_WIDTH);
+		// south
+		// south 2, right 1
+		this.highlight(index + 2 * BOARD_WIDTH + 1);
+		// south 2, left 1
+		this.highlight(index + 2 * BOARD_WIDTH - 1);
+		// left
+		// left 2, up 1
+		this.highlight(index - 2 + 1 * BOARD_WIDTH);
+		// left 2, down 1
+		this.highlight(index - 2 - 1 * BOARD_WIDTH);
+	}
+
+	highlight(index) {
+		const highlights = this.state.highlights.slice();
+		if(index < NUM_SQUARES) {
+			highlights[index] = 1;
+		}
+		this.setState({
+			highlights: highlights,
+		})
 	}
 
 	render() {
 		return (
 			<div>
 				{this.state.squares.map((square, index) => (
-					<Square key={index} id={index} getPieceInfo={() => this.getPieceInfo(index)} checkMoves={() => this.checkMoves(index)}/>
+					<Square
+						key={index}
+						id={index}
+						getPieceInfo={() => this.getPieceInfo(index)}
+						checkMoves={() => this.checkMoves(index)}
+						highlight={this.state.highlights[index]}
+					/>
 				))}
 			</div>
 		);
