@@ -41,9 +41,7 @@ export default class Square extends React.Component {
 
 	getImgBySrc(source) {
 		return (
-			<div>
 				<img className="piece" src={source} alt="chess piece" />
-			</div>
 		);
 	}
 
@@ -59,18 +57,16 @@ export default class Square extends React.Component {
 
 	render() {
 		return (
-			<div>
 				<button
 					className="square"
 					style={{ 
 						backgroundColor: this.getColor(),
-						borderColor: this.props.highlight ? "green": "black",
+						borderColor: this.props.highlight ? "green": "transparent",
 					}}
 					onClick={() => this.props.checkMoves()}
 				>
 					{this.getImg()}
 				</button>
-			</div>
 		);
 	}
 }
