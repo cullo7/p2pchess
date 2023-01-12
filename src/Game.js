@@ -107,6 +107,10 @@ export default class Game extends React.Component {
     }
 
     setPawn(index) {
+	return {
+	    color: -1,
+	    piece: ""
+	};
 	if (index > WHITE_SIDE) {
 	    return {
 		color: WHITE,
@@ -134,22 +138,98 @@ export default class Game extends React.Component {
 	    this.highlightKnight(index);
 	    break;
 	case "k":
-	    this.highlightKnight(index);
+	    this.highlightKing(index);
 	    break;
 	case "r":
-	    this.highlightKnight(index);
+	    this.highlightRook(index);
 	    break;
 	case "b":
-	    this.highlightKnight(index);
+	    this.highlightBishop(index);
 	    break;
 	case "q":
-	    this.highlightKnight(index);
+	    this.highlightQueen(index);
 	    break;
 	case "p":
-	    this.highlightKnight(index);
+	    this.highlightPawn(index);
 	    break;
 	default:
 	}
+    }
+
+    //incomplete
+    highlightQueen(index){}
+
+    //incomplete
+    highlightPawn(){}
+    
+    //incomplete
+    highlightBishop(index)  {
+	const highlights = this.state.highlights.slice();
+	const row = Math.floor(index / BOARD_WIDTH);
+	const xIndex = index % BOARD_WIDTH;
+	//northeast
+	let pos = index;
+	do {
+	    this.highlight(pos, highlights);
+	    pos -= (BOARD_WIDTH-1);
+	} while (pos > 0);
+	//southwest
+	pos = index;
+	do {
+	    this.highlight(pos, highlights);
+	    pos += (BOARD_WIDTH-1);
+	} while (pos > 0);
+	//northwest-southeast
+	for(let pos = (row + xIndex) * BOARD_WIDTH; pos < 0 && pos != index; pos -= (BOARD_WIDTH-1)) {
+	    this.highlight(pos, highlights);
+	}
+
+	this.setState({
+	    highlights: highlights,
+	})
+	
+    }
+    highlightKing(index) {
+	const highlights = this.state.highlights.slice();
+	//north
+	this.highlight(index - 1 * BOARD_WIDTH, highlights);
+	//northeast
+	this.highlight(index - 1 * BOARD_WIDTH + 1, highlights);
+	//east
+	this.highlight(index + 1, highlights);
+	//southeast
+	this.highlight(index + 1 * BOARD_WIDTH + 1, highlights);
+	//south
+	this.highlight(index + 1 * BOARD_WIDTH, highlights);
+	//southwest
+	this.highlight(index + 1 * BOARD_WIDTH - 1, highlights);
+	//west
+	this.highlight(index - 1, highlights);
+	//northwest
+	this.highlight(index - 1 * BOARD_WIDTH - 1, highlights);
+
+	this.setState({
+	    highlights: highlights,
+	})
+
+    }
+
+    highlightRook(index) {
+	const highlights = this.state.highlights.slice();
+	const row = Math.floor(index / BOARD_WIDTH);
+	//north-south
+	for(let pos = index % BOARD_WIDTH; pos < NUM_SQUARES && pos != index; pos += BOARD_WIDTH) {
+	    this.highlight(pos, highlights);
+	}
+	//east-west
+	for(let pos = row * BOARD_WIDTH; pos < row * (BOARD_WIDTH+1) && pos != index; pos++) {
+	    this.highlight(pos, highlights);
+	}
+
+	this.setState({
+	    highlights: highlights,
+	})
+
     }
 
     highlightKnight(index) {
